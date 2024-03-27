@@ -14,10 +14,7 @@ tar -xzf
 ```
 ./hello
 ```
-- You will see Hello World! on your terminal. 
-
-# How to contribute
-Follow this project board to know the latest status of the project: [http://...]([http://...])  
+- You will see Hello World! on your terminal.
 
 ### How to build
 - Use this github repository: ... 
@@ -26,3 +23,8 @@ Follow this project board to know the latest status of the project: [http://...]
 - Specify additional library to download if needed 
 - What file and target to compile and run. 
 - What is expected to happen when the app start. 
+
+### project proposal
+This document proposes a novel application of BrickBreaker, the classic arcade game but with a space theme. Players can navigate through a title screen menu to start and exit from the game. Players move their paddle left and right to deflect the ball upwards and crush the blocks. Each level increases the difficulty. Players can earn power ups that can temporarily make the paddle bigger, slow down the ball, or give you multiple balls to use.
+
+To run this file, open the project from intelliJ and run as a normal program. The Jframe will pop up, and you can begin the game.
