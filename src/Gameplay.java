@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener {
-    private boolean play = false;
+    private boolean play;
     private int score = 0;
     private int totalBricks = 48;
     private Timer timer;
