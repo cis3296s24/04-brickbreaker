@@ -26,8 +26,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private ImageIcon paddleIcon;
     private ImageIcon ballIcon;
 
+    private int levels = 1;
+
     public Gameplay() throws IOException {
-        map = new MapGenerator(2,2);
+        map = new MapGenerator(2,6);
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -195,6 +197,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         }
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
             if(!play){
+                levels += 1;
                 play = true;
                 ballposX = 120;
                 ballposY = 350;
@@ -202,8 +205,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                 ballYdir = -2;
                 playerX = 310;
                 score = 0;
-                totalBricks = 21;
-                map = new MapGenerator(3,7);
+                totalBricks = (levels + 1) * (levels + 5);
+                map = new MapGenerator((levels + 1),(levels + 5));
 
                 repaint();
             }
