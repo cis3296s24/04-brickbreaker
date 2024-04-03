@@ -26,16 +26,25 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private ImageIcon paddleIcon;
     private ImageIcon ballIcon;
 
+    //private int level = 0;
+
+    //private final int finalLevel = 4;
+
+    //private boolean firstLevelDone = false;
+
+
+
     public Gameplay() throws IOException {
-        map = new MapGenerator(2,2);
+        map = new MapGenerator(1,1);
+        //loadFirstLevel();
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         timer = new Timer(delay, this);
         timer.start();
-        paddleIcon = new ImageIcon("/SchoolWork/softwareDesign/BrickBreakerGame/src/paddle.jpg");
-        ballIcon = new ImageIcon("/SchoolWork/softwareDesign/BrickBreakerGame/src/ball.png");
-        backgroundImage = ImageIO.read(new File("/SchoolWork/softwareDesign/BrickBreakerGame/src/background.jpg")); // Change "background.jpg" to your image file path
+        paddleIcon = new ImageIcon("/Users/maste/Desktop/04-brickbreaker/src/paddle.jpg");
+        ballIcon = new ImageIcon("/Users/maste/Desktop/04-brickbreaker/src/ball.png");
+        backgroundImage = ImageIO.read(new File("/Users/maste/Desktop/04-brickbreaker/src/background.jpg")); // Change "background.jpg" to your image file path
 
     }
 
@@ -67,12 +76,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
 
         //the paddle
-       Image paddleImage =  paddleIcon.getImage();
-       g.drawImage(paddleImage, playerX, 500,80,80, this);
+        Image paddleImage =  paddleIcon.getImage();
+        g.drawImage(paddleImage, playerX, 500,80,80, this);
 
         //the ball
-      Image ballImage = ballIcon.getImage();
-      g.drawImage(ballImage, ballposX, ballposY, 10, 10, this);
+        Image ballImage = ballIcon.getImage();
+        g.drawImage(ballImage, ballposX, ballposY, 10, 10, this);
 
         if(totalBricks <= 0){
             play = false;
@@ -81,6 +90,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             if(score > highScore){
                 highScore = score;
             }
+
             g.setColor(Color.blue);
             g.setFont(new Font("comic sans", Font.BOLD, 30));
             g.drawString("You won! Score: " + score, 190, 300);
@@ -115,60 +125,67 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    timer.start();
-    if(play){
-        if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX, 550, 30, 8))){
-            ballYdir = -ballYdir;
-            ballXdir = -2;
-        }
-        else if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX + 70, 550, 30, 8))){
-            ballYdir = -ballYdir;
-            ballXdir = ballXdir + 1;
-        }
-        else if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX + 30, 550, 40, 8)))
-        {
-            ballYdir = -ballYdir;
-        }
+        timer.start();
+        if(play){
+            if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX, 550, 30, 8))){
+                ballYdir = -ballYdir;
+                ballXdir = -2;
+            }
+            else if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX + 70, 550, 30, 8))){
+                ballYdir = -ballYdir;
+                ballXdir = ballXdir + 1;
+            }
+            else if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX + 30, 550, 40, 8)))
+            {
+                ballYdir = -ballYdir;
+            }
 
-        A: for(int i = 0; i < map.map.length; i++){
-            for(int j = 0; j < map.map[0].length; j++){
-                if(map.map[i][j] > 0){
-                    int bricksX = j * map.brickWidth + 80;
-                    int bricksY = i * map.brickHeight + 50;
-                    int brickWidth = map.brickWidth;
-                    int brickHeight = map.brickHeight;
+            A: for(int i = 0; i < map.map.length; i++){
+                for(int j = 0; j < map.map[0].length; j++){
+                    if(map.map[i][j] > 0){
+                        int bricksX = j * map.brickWidth + 80;
+                        int bricksY = i * map.brickHeight + 50;
+                        int brickWidth = map.brickWidth;
+                        int brickHeight = map.brickHeight;
 
-                    Rectangle rect = new Rectangle(bricksX, bricksY, brickWidth, brickHeight);
-                    Rectangle ballRect = new Rectangle(ballposX, ballposY, 20, 20);
+                        Rectangle rect = new Rectangle(bricksX, bricksY, brickWidth, brickHeight);
+                        Rectangle ballRect = new Rectangle(ballposX, ballposY, 20, 20);
 
-                    if(ballRect.intersects(rect)){
-                        map.setBricksValue(0,i,j);
-                        score += 5;
-                        totalBricks--;
+                        if(ballRect.intersects(rect)){
+                            map.setBricksValue(0,i,j);
+                            score += 5;
+                            totalBricks--;
 
-                        if(ballposX + 19 <= rect.x || ballposX + 1 >= rect.x + rect.width){
-                            ballXdir = -ballXdir;
-                        }else{
-                            ballYdir = -ballYdir;
+                            if(ballposX + 19 <= rect.x || ballposX + 1 >= rect.x + rect.width){
+                                ballXdir = -ballXdir;
+                            }else{
+                                ballYdir = -ballYdir;
+                            }
+                            break A;
                         }
-                        break A;
                     }
                 }
             }
+
+            /*
+            if (totalBricks <= 0)
+                firstLevelDone = true;
+
+             */
+
+            ballposX += ballXdir;
+            ballposY += ballYdir;
+            if(ballposX < 0){
+                ballXdir = -ballXdir;
+            }
+            if(ballposY < 0){
+                ballYdir = -ballYdir;
+            }
+            if(ballposX > 670){
+                ballXdir = -ballXdir;
+            }
         }
-        ballposX += ballXdir;
-        ballposY += ballYdir;
-        if(ballposX < 0){
-            ballXdir = -ballXdir;
-        }
-        if(ballposY < 0){
-            ballYdir = -ballYdir;
-        }
-        if(ballposX > 670){
-            ballXdir = -ballXdir;
-        }
-    }
-    repaint();
+        repaint();
     }
 
 
@@ -193,6 +210,14 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                 moveLeft();
             }
         }
+
+        /*
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && firstLevelDone) {
+            loadLevels();
+        }
+
+         */
+
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
             if(!play){
                 play = true;
@@ -202,8 +227,21 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                 ballYdir = -2;
                 playerX = 310;
                 score = 0;
+
                 totalBricks = 21;
                 map = new MapGenerator(3,7);
+
+
+
+                /*
+                do {
+
+                        loadLevels();
+                } while (MoreLevels() && e.getKeyCode() == KeyEvent.VK_ENTER); //&& //firstLevelDone);
+
+                 */
+
+
 
                 repaint();
             }
@@ -221,5 +259,46 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     public void keyReleased(KeyEvent e) {
 
     }
+
+    /*
+    public boolean MoreLevels(){
+        return level < finalLevel;
+    }
+
+
+
+    public void loadFirstLevel() {
+        totalBricks = 1;
+        map = new MapGenerator(1, 1);
+    }
+
+    public void loadLevels(){
+
+    //System.out.println(level);
+        switch (level) {
+                case 3:
+                    totalBricks = 2;
+                    map = new MapGenerator(2, 1);
+
+
+                    break;
+                case 4:
+                    totalBricks = 3;
+                    map = new MapGenerator(3, 1);
+                    break;
+                case 5:
+                    totalBricks = 4;
+                    map = new MapGenerator(2, 2);
+                    break;
+                default:
+                    break;
+                }
+                level++;
+                firstLevelDone = false;
+
+                // figure out how to get to first case
+        }
+
+     */
 
 }
