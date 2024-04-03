@@ -35,9 +35,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         setFocusTraversalKeysEnabled(false);
         timer = new Timer(delay, this);
         timer.start();
-        paddleIcon = new ImageIcon("/SchoolWork/softwareDesign/BrickBreakerGame/src/paddle.jpg");
-        ballIcon = new ImageIcon("/SchoolWork/softwareDesign/BrickBreakerGame/src/ball.png");
-        backgroundImage = ImageIO.read(new File("/SchoolWork/softwareDesign/BrickBreakerGame/src/background.jpg")); // Change "background.jpg" to your image file path
+        paddleIcon = new ImageIcon("/Users/Vasilios/Desktop/softwareDesign/brickBreaker/04-brickbreaker/src/paddle.jpg");
+        ballIcon = new ImageIcon("/Users/Vasilios/Desktop/softwareDesign/brickBreaker/04-brickbreaker/src/ball.png");
+        backgroundImage = ImageIO.read(new File("/Users/Vasilios/Desktop/softwareDesign/brickBreaker/04-brickbreaker/src/background.jpg")); // Change "background.jpg" to your image file path
 
     }
 
@@ -197,18 +197,34 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         }
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
             if(!play){
-                levels += 1;
-                play = true;
-                ballposX = 120;
-                ballposY = 350;
-                ballXdir = -1;
-                ballYdir = -2;
-                playerX = 310;
-                score = 0;
-                totalBricks = (levels + 1) * (levels + 5);
-                map = new MapGenerator((levels + 1),(levels + 5));
+                if (totalBricks <= 0) {
+                    levels += 1;
+                    play = true;
+                    ballposX = 120;
+                    ballposY = 350;
+                    ballXdir = -1;
+                    ballYdir = -2;
+                    playerX = 310;
+                    score = 0;
+                    totalBricks = (levels + 1) * (levels + 5);
+                    map = new MapGenerator((levels + 1), (levels + 5));
 
-                repaint();
+                    repaint();
+                }
+                else {
+                    play = true;
+                    ballposX = 120;
+                    ballposY = 350;
+                    ballXdir = -1;
+                    ballYdir = -2;
+                    playerX = 310;
+                    score = 0;
+                    totalBricks = (levels + 1) * (levels + 5);
+                    map = new MapGenerator((levels + 1), (levels + 5));
+
+                    repaint();
+
+                }
             }
         }
     }
