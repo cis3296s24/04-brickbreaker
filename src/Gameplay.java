@@ -11,7 +11,7 @@ import java.io.IOException;
 import org.apache.commons.lang3.time.StopWatch;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener {
-    private boolean play = false;
+    private boolean play;
     private int score = 0;
     private int totalBricks = 48;
     private Timer timer;
@@ -42,9 +42,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         timer.start();
         watch.reset();
         watch.start();
-        paddleIcon = new ImageIcon(pathname + "/04-brickbreaker/src/paddle.jpg");
-        ballIcon = new ImageIcon(pathname + "/04-brickbreaker/src/ball.png");
-        backgroundImage = ImageIO.read(new File(pathname + "/04-brickbreaker/src/background.jpg")); // Change "background.jpg" to your image file path
+
+        paddleIcon = new ImageIcon(this.getClass().getResource("paddle.png"));
+        ballIcon = new ImageIcon(this.getClass().getResource("ball.png"));
+        backgroundImage = ImageIO.read(this.getClass().getResource("background.jpg")); // Change "background.jpg" to your image file path
+
+ main
     }
 
     public void paintComponent(Graphics g){

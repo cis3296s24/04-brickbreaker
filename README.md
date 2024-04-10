@@ -1,8 +1,9 @@
-# Project Name
-Put here a short paragraph describing your project. 
+# Brick Breaker
+BrickBreaker, the classic arcade game but with a space theme.Players can navigate through a title screen menu to start and exit from the game. Players move their paddle left and right to deflect the ball upwards and crush the blocks. Each level increases the difficulty. Players can earn power ups that can temporarily make the paddle bigger, slow down the ball, or give you multiple balls to use.
+
 Adding an screenshot or a mockup of your application in action would be nice.  
 
-![This is a screenshot.](images.png)
+![This is a screenshot.]()
 # How to run
 Provide here instructions on how to use your application.   
 - Download the latest binary from the Release section on the right on GitHub.  
