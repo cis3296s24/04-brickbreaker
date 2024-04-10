@@ -35,9 +35,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         setFocusTraversalKeysEnabled(false);
         timer = new Timer(delay, this);
         timer.start();
-        paddleIcon = new ImageIcon("C:\\Users\\damim\\Desktop\\SPRING24\\labs\\04-brickbreaker\\src\\paddle.png");
-        ballIcon = new ImageIcon("C:\\Users\\damim\\Desktop\\SPRING24\\labs\\04-brickbreaker\\src\\ball.png");
-        backgroundImage = ImageIO.read(new File("C:\\Users\\damim\\Desktop\\SPRING24\\labs\\04-brickbreaker\\src\\background.jpg")); // Change "background.jpg" to your image file path
+        paddleIcon = new ImageIcon(this.getClass().getResource("paddle.png"));
+        ballIcon = new ImageIcon(this.getClass().getResource("ball.png"));
+        backgroundImage = ImageIO.read(this.getClass().getResource("background.jpg")); // Change "background.jpg" to your image file path
 
     }
 
