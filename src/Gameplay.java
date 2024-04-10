@@ -8,12 +8,15 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import org.apache.commons.lang3.time.StopWatch;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private boolean play;
     private int score = 0;
     private int totalBricks = 48;
     private Timer timer;
+    private  long bestTime = 500000;
+    private long currentTime = 0;
     private int delay = 8;
     private int playerX = 310;
     private int ballposX = 120;
@@ -25,6 +28,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private MapGenerator map;
     private ImageIcon paddleIcon;
     private ImageIcon ballIcon;
+    private String pathname = "/Users/queenkev/Documents/GitHub";
+   StopWatch watch = new StopWatch();
 
     private int levels = 1;
 
@@ -35,10 +40,14 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         setFocusTraversalKeysEnabled(false);
         timer = new Timer(delay, this);
         timer.start();
+        watch.reset();
+        watch.start();
+
         paddleIcon = new ImageIcon(this.getClass().getResource("paddle.png"));
         ballIcon = new ImageIcon(this.getClass().getResource("ball.png"));
         backgroundImage = ImageIO.read(this.getClass().getResource("background.jpg")); // Change "background.jpg" to your image file path
 
+ main
     }
 
     public void paintComponent(Graphics g){
@@ -66,6 +75,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         g.setFont(new Font("comic sans", Font.BOLD, 25));
         g.drawString("High Score: " + highScore, 30, 590);
 
+        //Timer
+        g.setColor(Color.white);
+        g.setFont(new Font("comic sans",Font.BOLD, 25));
+        g.drawString(formatElapsedTime(watch.getTime()), 50, 30);
+
 
 
         //the paddle
@@ -78,10 +92,16 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
         if(totalBricks <= 0){
             play = false;
+            watch.stop();
+            currentTime = watch.getStopTime();
             ballXdir = 0;
             ballYdir = 0;
+
             if(score > highScore){
                 highScore = score;
+            }
+            if(currentTime < bestTime){
+                bestTime = currentTime;
             }
             g.setColor(Color.blue);
             g.setFont(new Font("comic sans", Font.BOLD, 30));
@@ -92,12 +112,17 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
             g.setFont(new Font("comic sans", Font.BOLD, 20));
             g.drawString("Press enter to Restart", 230, 350);
+
+            g.setFont(new Font("comic sans", Font.BOLD, 20));
+            g.drawString("Best Time: " + formatElapsedTime(bestTime), 280, 380);
         }
 
         if(ballposY > 570){
             play = false;
+            watch.stop();
             ballXdir = 0;
             ballYdir = 0;
+
             if(score > highScore){
                 highScore = score;
             }
@@ -110,6 +135,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
             g.setFont(new Font("comic sans", Font.BOLD, 20));
             g.drawString("Press enter to Restart", 250, 350);
+
+            g.setFont(new Font("comic sans", Font.BOLD, 20));
+            g.drawString("Press enter to Restart", 250, 350);
+
+            g.setFont(new Font("comic sans", Font.BOLD, 20));
+            g.drawString("Best Time: " + formatElapsedTime(bestTime), 270, 380);
         }
         g.dispose();
     }
@@ -200,6 +231,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                 if (totalBricks <= 0) {
                     levels += 1;
                     play = true;
+                    watch.start();
                     ballposX = 120;
                     ballposY = 350;
                     ballXdir = -1;
@@ -213,6 +245,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                 }
                 else {
                     play = true;
+                    watch.start();
                     ballposX = 120;
                     ballposY = 350;
                     ballXdir = -1;
@@ -223,7 +256,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                     map = new MapGenerator((levels + 1), (levels + 5));
 
                     repaint();
-
                 }
             }
         }
@@ -241,6 +273,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+    private String formatElapsedTime(long millis){
+        long seconds = millis / 1000;
+        long minutes = seconds / 60;
+        seconds = seconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
 }
