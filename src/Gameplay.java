@@ -6,15 +6,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
+
 import org.apache.commons.lang3.time.StopWatch;
+
+import static javax.swing.plaf.basic.BasicGraphicsUtils.drawString;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private boolean play;
     private int score = 0;
     private int totalBricks = 48;
     private Timer timer;
+    //default best time
     private  long bestTime = 500000;
     private long currentTime = 0;
     private int delay = 8;
@@ -28,7 +32,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private MapGenerator map;
     private ImageIcon paddleIcon;
     private ImageIcon ballIcon;
-    private String pathname = "/Users/queenkev/Documents/GitHub";
    StopWatch watch = new StopWatch();
 
     private int levels = 1;
@@ -41,13 +44,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         timer = new Timer(delay, this);
         timer.start();
         watch.reset();
-        watch.start();
-
-        paddleIcon = new ImageIcon(this.getClass().getResource("paddle.png"));
-        ballIcon = new ImageIcon(this.getClass().getResource("ball.png"));
-        backgroundImage = ImageIO.read(this.getClass().getResource("background.jpg")); // Change "background.jpg" to your image file path
-
- main
+        paddleIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("paddle.png")));
+        ballIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("ball.png")));
+        backgroundImage = ImageIO.read(Objects.requireNonNull(this.getClass().getResource("background.jpg")));// Change "background.jpg" to your image file path
     }
 
     public void paintComponent(Graphics g){
@@ -75,25 +74,31 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         g.setFont(new Font("comic sans", Font.BOLD, 25));
         g.drawString("High Score: " + highScore, 30, 590);
 
+        //Must double press enter to begin game
         //Timer
         g.setColor(Color.white);
         g.setFont(new Font("comic sans",Font.BOLD, 25));
         g.drawString(formatElapsedTime(watch.getTime()), 50, 30);
 
 
-
         //the paddle
        Image paddleImage =  paddleIcon.getImage();
-       g.drawImage(paddleImage, playerX, 500,80,80, this);
+        g.drawImage(paddleImage, playerX, 500,80,80, this);
 
         //the ball
-      Image ballImage = ballIcon.getImage();
-      g.drawImage(ballImage, ballposX, ballposY, 10, 10, this);
+        Image ballImage = ballIcon.getImage();
+        g.drawImage(ballImage, ballposX, ballposY, 10, 10, this);
+
+        if(!play){
+            g.setColor(Color.blue);
+            g.setFont(new Font("comic sans",Font.BOLD, 25));
+            g.drawString("Double press enter to start ", 190, 300);
+        }
 
         if(totalBricks <= 0){
-            play = false;
             watch.stop();
-            currentTime = watch.getStopTime();
+            play = false;
+            currentTime = watch.getTime();
             ballXdir = 0;
             ballYdir = 0;
 
@@ -114,12 +119,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             g.drawString("Press enter to Restart", 230, 350);
 
             g.setFont(new Font("comic sans", Font.BOLD, 20));
-            g.drawString("Best Time: " + formatElapsedTime(bestTime), 280, 380);
+            g.drawString("Best Time: " + formatElapsedTime(bestTime), 270, 380);
         }
 
         if(ballposY > 570){
-            play = false;
             watch.stop();
+            play = false;
             ballXdir = 0;
             ballYdir = 0;
 
@@ -137,9 +142,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             g.drawString("Press enter to Restart", 250, 350);
 
             g.setFont(new Font("comic sans", Font.BOLD, 20));
-            g.drawString("Press enter to Restart", 250, 350);
-
-            g.setFont(new Font("comic sans", Font.BOLD, 20));
             g.drawString("Best Time: " + formatElapsedTime(bestTime), 270, 380);
         }
         g.dispose();
@@ -148,7 +150,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    timer.start();
     if(play){
         if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX, 550, 30, 8))){
             ballYdir = -ballYdir;
@@ -229,9 +230,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
             if(!play){
                 if (totalBricks <= 0) {
+                    watch.reset();
                     levels += 1;
                     play = true;
-                    watch.start();
+
                     ballposX = 120;
                     ballposY = 350;
                     ballXdir = -1;
@@ -240,12 +242,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                     score = 0;
                     totalBricks = (levels + 1) * (levels + 5);
                     map = new MapGenerator((levels + 1), (levels + 5));
-
+                    watch.start();
                     repaint();
                 }
                 else {
+                    watch.reset();
                     play = true;
-                    watch.start();
                     ballposX = 120;
                     ballposY = 350;
                     ballXdir = -1;
@@ -254,9 +256,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                     score = 0;
                     totalBricks = (levels + 1) * (levels + 5);
                     map = new MapGenerator((levels + 1), (levels + 5));
-
+                    watch.start();
                     repaint();
                 }
+            } else{
+                watch.reset();
+                watch.start();
             }
         }
     }
