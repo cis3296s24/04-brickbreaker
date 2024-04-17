@@ -1,4 +1,7 @@
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,8 +9,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+
+import javax.sound.sampled.*;
+import javax.swing.JFrame;
+import java.io.File;
+import java.io.IOException;
 
 import org.apache.commons.lang3.time.StopWatch;
 
@@ -33,10 +42,17 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private ImageIcon paddleIcon;
     private ImageIcon ballIcon;
    StopWatch watch = new StopWatch();
-
     private int levels = 1;
 
-    public Gameplay() throws IOException {
+    public Gameplay() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        File song = new File(("./src/backgroundMusic.wav"));
+        //File song = new File("backgroundMusic.wav");
+        AudioInputStream audioIn = AudioSystem.getAudioInputStream(song.getAbsoluteFile());
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioIn);
+        //clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+
         map = new MapGenerator(2,6);
         addKeyListener(this);
         setFocusable(true);
