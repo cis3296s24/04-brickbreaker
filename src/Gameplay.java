@@ -128,9 +128,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             ballXdir = 0;
             ballYdir = 0;
 
-            if(score > highScore){
-                highScore = score;
-            }
             g.setColor(Color.blue);
             g.setFont(new Font("comic sans", Font.BOLD, 30));
             g.drawString("Game Over, Score: " + score, 190, 300);
@@ -213,52 +210,28 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+        int keyCode = e.getKeyCode();
+
+        if(keyCode == KeyEvent.VK_RIGHT){
             if(playerX >= 600 ){
                 playerX = 600;
             } else{
                 moveRight();
             }
         }
-        if(e.getKeyCode() == KeyEvent.VK_LEFT){
+        else if(keyCode == KeyEvent.VK_LEFT){
             if(playerX < 10){
                 playerX = 10;
             }else{
                 moveLeft();
             }
         }
-        if(e.getKeyCode() == KeyEvent.VK_ENTER){
+        else if(keyCode == KeyEvent.VK_ENTER){
             if(!play){
                 if (totalBricks <= 0) {
-                    watch.reset();
-                    levels += 1;
-                    play = true;
-
-                    ballposX = 120;
-                    ballposY = 350;
-                    ballXdir = -1;
-                    ballYdir = -2;
-                    playerX = 310;
-                    score = 0;
-                    totalBricks = (levels + 1) * (levels + 5);
-                    map = new MapGenerator((levels + 1), (levels + 5));
-                    watch.start();
-                    repaint();
+                    levels ++;
                 }
-                else {
-                    watch.reset();
-                    play = true;
-                    ballposX = 120;
-                    ballposY = 350;
-                    ballXdir = -1;
-                    ballYdir = -2;
-                    playerX = 310;
-                    score = 0;
-                    totalBricks = (levels + 1) * (levels + 5);
-                    map = new MapGenerator((levels + 1), (levels + 5));
-                    watch.start();
-                    repaint();
-                }
+                resetGame();
             } else{
                 watch.reset();
                 watch.start();
@@ -284,6 +257,21 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         long minutes = seconds / 60;
         seconds = seconds % 60;
         return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    private void resetGame(){
+        play = true;
+        ballposX = 120;
+        ballposY = 350;
+        ballXdir = -1;
+        ballYdir = -2;
+        playerX = 310;
+        score = 0;
+        totalBricks = (levels + 1) * (levels + 5);
+        map = new MapGenerator((levels + 1), (levels + 5));
+        watch.reset();
+        watch.start();
+        repaint();
     }
 
 }

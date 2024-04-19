@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="gameMusic (2)">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/gameMusic" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/gameMusic" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/gameMusic" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/gameMusic" recursive="false" type="SOURCES" />
+  </library>
+</component>
