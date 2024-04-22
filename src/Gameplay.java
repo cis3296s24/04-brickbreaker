@@ -43,7 +43,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     private int levels = 1;
 
-    public Gameplay() throws IOException {
+    public Gameplay() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         File song = new File(("./src/backgroundMusic.wav"));
         //File song = new File("backgroundMusic.wav");
         AudioInputStream audioIn = AudioSystem.getAudioInputStream(song.getAbsoluteFile());
