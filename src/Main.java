@@ -21,21 +21,21 @@ public class Main  {
         title.setFont(heading);
         title.setPreferredSize(new Dimension(700, 50));
         title.setOpaque(true);
-        title.setBackground(Color.decode("#1967af"));
+        title.setBackground(Color.decode("#749cbd"));
         obj.getContentPane().add(title, BorderLayout.PAGE_START);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel textPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         textPanel.setPreferredSize(new Dimension(700,550));
-        textPanel.setBackground(Color.blue);
+        textPanel.setBackground(Color.decode("#749cbd"));
         textPanel.setOpaque(true);
         JLabel welcomeMessage = new JLabel(" Select a Level\n\n");
         welcomeMessage.setFont(new Font("Times Roman", Font.BOLD, 25));
         textPanel.add(welcomeMessage);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.setBackground(Color.blue);
+        buttonPanel.setBackground(Color.decode("#749cbd"));
         buttonPanel.setOpaque(true);
 
         JButton Level1 = new JButton("Level 1");
