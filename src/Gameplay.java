@@ -9,10 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Objects;
-
 import javax.sound.sampled.*;
 import javax.swing.JFrame;
 import java.io.File;
@@ -41,10 +38,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private MapGenerator map;
     private ImageIcon paddleIcon;
     private ImageIcon ballIcon;
+  
    StopWatch watch = new StopWatch();
+
     private int levels = 1;
 
-    public Gameplay() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+    public Gameplay() throws IOException {
         File song = new File(("./src/backgroundMusic.wav"));
         //File song = new File("backgroundMusic.wav");
         AudioInputStream audioIn = AudioSystem.getAudioInputStream(song.getAbsoluteFile());
@@ -144,9 +143,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             ballXdir = 0;
             ballYdir = 0;
 
-            if(score > highScore){
-                highScore = score;
-            }
             g.setColor(Color.blue);
             g.setFont(new Font("comic sans", Font.BOLD, 30));
             g.drawString("Game Over, Score: " + score, 190, 300);
@@ -229,52 +225,28 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+        int keyCode = e.getKeyCode();
+
+        if(keyCode == KeyEvent.VK_RIGHT){
             if(playerX >= 600 ){
                 playerX = 600;
             } else{
                 moveRight();
             }
         }
-        if(e.getKeyCode() == KeyEvent.VK_LEFT){
+        else if(keyCode == KeyEvent.VK_LEFT){
             if(playerX < 10){
                 playerX = 10;
             }else{
                 moveLeft();
             }
         }
-        if(e.getKeyCode() == KeyEvent.VK_ENTER){
+        else if(keyCode == KeyEvent.VK_ENTER){
             if(!play){
                 if (totalBricks <= 0) {
-                    watch.reset();
-                    levels += 1;
-                    play = true;
-
-                    ballposX = 120;
-                    ballposY = 350;
-                    ballXdir = -1;
-                    ballYdir = -2;
-                    playerX = 310;
-                    score = 0;
-                    totalBricks = (levels + 1) * (levels + 5);
-                    map = new MapGenerator((levels + 1), (levels + 5));
-                    watch.start();
-                    repaint();
+                    levels ++;
                 }
-                else {
-                    watch.reset();
-                    play = true;
-                    ballposX = 120;
-                    ballposY = 350;
-                    ballXdir = -1;
-                    ballYdir = -2;
-                    playerX = 310;
-                    score = 0;
-                    totalBricks = (levels + 1) * (levels + 5);
-                    map = new MapGenerator((levels + 1), (levels + 5));
-                    watch.start();
-                    repaint();
-                }
+                resetGame();
             } else{
                 watch.reset();
                 watch.start();
@@ -300,6 +272,21 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         long minutes = seconds / 60;
         seconds = seconds % 60;
         return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    private void resetGame(){
+        play = true;
+        ballposX = 120;
+        ballposY = 350;
+        ballXdir = -1;
+        ballYdir = -2;
+        playerX = 310;
+        score = 0;
+        totalBricks = (levels + 1) * (levels + 5);
+        map = new MapGenerator((levels + 1), (levels + 5));
+        watch.reset();
+        watch.start();
+        repaint();
     }
 
 }
