@@ -76,9 +76,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
         //borders
         g.setColor(Color.blue);
-        g.fillRect(0, 0 ,3 ,592);
-        g.fillRect(0, 0 ,692 ,3);
-        g.fillRect(691, 0 ,3 ,592);
+        g.fillRect(0, 0 ,3 ,700); //left
+        g.fillRect(0, 0 ,700 ,3); // top
+        g.fillRect(697, 0 ,3 ,700); //right
+        g.fillRect(0, 680 ,700 ,3); // bottom
 
         //scores
         g.setColor(Color.white);
@@ -87,7 +88,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
         g.setColor(Color.white);
         g.setFont(new Font("comic sans", Font.BOLD, 25));
-        g.drawString("High Score: " + highScore, 30, 590);
+        g.drawString("High Score: " + highScore, 30, 650);
 
         //Must double press enter to begin game
         //Timer
