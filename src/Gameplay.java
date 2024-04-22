@@ -6,14 +6,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
+
+import org.apache.commons.lang3.time.StopWatch;
+
+import static javax.swing.plaf.basic.BasicGraphicsUtils.drawString;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener {
-    private boolean play = false;
+    private boolean play;
     private int score = 0;
-    private int totalBricks = 48;
+    private int totalBricks = 0;
     private Timer timer;
+    //default best time
+    private  long bestTime = 500000;
+    private long currentTime = 0;
     private int delay = 8;
     private int playerX = 310;
     private int ballposX = 120;
@@ -25,27 +32,28 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private MapGenerator map;
     private ImageIcon paddleIcon;
     private ImageIcon ballIcon;
+    StopWatch watch = new StopWatch();
 
-    //private int level = 0;
+    private int levels = 1;
 
-    //private final int finalLevel = 4;
-
-    //private boolean firstLevelDone = false;
-
+    private int minusBricks = 0;
 
 
     public Gameplay() throws IOException {
-        map = new MapGenerator(1,1);
-        //loadFirstLevel();
+        map = new MapGenerator(5,5);
+        minusBricks = map.bricksRemoved(5,5);
+        totalBricks = 25 - minusBricks;
+        //System.out.println("Total bricks" + totalBricks);
+
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         timer = new Timer(delay, this);
         timer.start();
-        paddleIcon = new ImageIcon("/Users/maste/Desktop/04-brickbreaker/src/paddle.jpg");
-        ballIcon = new ImageIcon("/Users/maste/Desktop/04-brickbreaker/src/ball.png");
-        backgroundImage = ImageIO.read(new File("/Users/maste/Desktop/04-brickbreaker/src/background.jpg")); // Change "background.jpg" to your image file path
-
+        watch.reset();
+        paddleIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("paddle.jpg")));
+        ballIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("ball.png")));
+        backgroundImage = ImageIO.read(Objects.requireNonNull(this.getClass().getResource("background.jpg")));// Change "background.jpg" to your image file path
     }
 
     public void paintComponent(Graphics g){
@@ -73,6 +81,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         g.setFont(new Font("comic sans", Font.BOLD, 25));
         g.drawString("High Score: " + highScore, 30, 590);
 
+        //Must double press enter to begin game
+        //Timer
+        g.setColor(Color.white);
+        g.setFont(new Font("comic sans",Font.BOLD, 25));
+        g.drawString(formatElapsedTime(watch.getTime()), 50, 30);
 
 
         //the paddle
@@ -83,14 +96,25 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         Image ballImage = ballIcon.getImage();
         g.drawImage(ballImage, ballposX, ballposY, 10, 10, this);
 
-        if(totalBricks <= 0){
+        if(!play){
+            g.setColor(Color.blue);
+            g.setFont(new Font("comic sans",Font.BOLD, 25));
+            g.drawString("Double press enter to start ", 190, 300);
+        }
+
+        if(totalBricks == 0){
+            watch.stop();
             play = false;
+            currentTime = watch.getTime();
             ballXdir = 0;
             ballYdir = 0;
+
             if(score > highScore){
                 highScore = score;
             }
-
+            if(currentTime < bestTime){
+                bestTime = currentTime;
+            }
             g.setColor(Color.blue);
             g.setFont(new Font("comic sans", Font.BOLD, 30));
             g.drawString("You won! Score: " + score, 190, 300);
@@ -100,12 +124,17 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
             g.setFont(new Font("comic sans", Font.BOLD, 20));
             g.drawString("Press enter to Restart", 230, 350);
+
+            g.setFont(new Font("comic sans", Font.BOLD, 20));
+            g.drawString("Best Time: " + formatElapsedTime(bestTime), 270, 380);
         }
 
         if(ballposY > 570){
+            watch.stop();
             play = false;
             ballXdir = 0;
             ballYdir = 0;
+
             if(score > highScore){
                 highScore = score;
             }
@@ -118,6 +147,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
             g.setFont(new Font("comic sans", Font.BOLD, 20));
             g.drawString("Press enter to Restart", 250, 350);
+
+            g.setFont(new Font("comic sans", Font.BOLD, 20));
+            g.drawString("Best Time: " + formatElapsedTime(bestTime), 270, 380);
         }
         g.dispose();
     }
@@ -125,7 +157,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        timer.start();
         if(play){
             if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX, 550, 30, 8))){
                 ballYdir = -ballYdir;
@@ -166,13 +197,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                     }
                 }
             }
-
-            /*
-            if (totalBricks <= 0)
-                firstLevelDone = true;
-
-             */
-
             ballposX += ballXdir;
             ballposY += ballYdir;
             if(ballposX < 0){
@@ -210,43 +234,51 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                 moveLeft();
             }
         }
-
-        /*
-        if (e.getKeyCode() == KeyEvent.VK_ENTER && firstLevelDone) {
-            loadLevels();
-        }
-
-         */
-
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
             if(!play){
-                play = true;
-                ballposX = 120;
-                ballposY = 350;
-                ballXdir = -1;
-                ballYdir = -2;
-                playerX = 310;
-                score = 0;
+                if (totalBricks <= 0) {
+                    watch.reset();
+                    levels += 1;
+                    play = true;
 
-                totalBricks = 21;
-                map = new MapGenerator(3,7);
-
-
-
-                /*
-                do {
-
-                        loadLevels();
-                } while (MoreLevels() && e.getKeyCode() == KeyEvent.VK_ENTER); //&& //firstLevelDone);
-
-                 */
-
-
-
-                repaint();
+                    ballposX = 120;
+                    ballposY = 350;
+                    ballXdir = -1;
+                    ballYdir = -2;
+                    playerX = 310;
+                    score = 0;
+                    map = new MapGenerator((levels + 1), (levels + 5));
+                    minusBricks = map.bricksRemoved((levels + 1),(levels + 5)); // missing bricks
+                    //subtract from total bricks
+                    totalBricks = (levels + 1) * (levels + 5) - minusBricks;
+                    System.out.println("(In total <= 0) Total bricks" + totalBricks);
+                    watch.start();
+                    repaint();
+                }
+                else {
+                    watch.reset();
+                    play = true;
+                    ballposX = 120;
+                    ballposY = 350;
+                    ballXdir = -1;
+                    ballYdir = -2;
+                    playerX = 310;
+                    score = 0;
+                    map = new MapGenerator((levels + 1), (levels + 5));
+                    minusBricks = map.bricksRemoved((levels + 1),(levels + 5));
+                    totalBricks = (levels + 1) * (levels + 5) - minusBricks;
+                    System.out.println("(In else) Total bricks" + totalBricks);
+                    watch.start();
+                    repaint();
+                }
+            } else{
+                watch.reset();
+                watch.start();
             }
         }
     }
+
+    //test :3
     public void moveRight(){
         play = true;
         playerX+=20;
@@ -259,46 +291,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     public void keyReleased(KeyEvent e) {
 
     }
-
-    /*
-    public boolean MoreLevels(){
-        return level < finalLevel;
+    private String formatElapsedTime(long millis){
+        long seconds = millis / 1000;
+        long minutes = seconds / 60;
+        seconds = seconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
-
-
-
-    public void loadFirstLevel() {
-        totalBricks = 1;
-        map = new MapGenerator(1, 1);
-    }
-
-    public void loadLevels(){
-
-    //System.out.println(level);
-        switch (level) {
-                case 3:
-                    totalBricks = 2;
-                    map = new MapGenerator(2, 1);
-
-
-                    break;
-                case 4:
-                    totalBricks = 3;
-                    map = new MapGenerator(3, 1);
-                    break;
-                case 5:
-                    totalBricks = 4;
-                    map = new MapGenerator(2, 2);
-                    break;
-                default:
-                    break;
-                }
-                level++;
-                firstLevelDone = false;
-
-                // figure out how to get to first case
-        }
-
-     */
 
 }
