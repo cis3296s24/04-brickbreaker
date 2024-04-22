@@ -20,7 +20,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/musicStuff/javafx-sdk-22.0.1/lib/javafx-swt.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../musicStuff/javafx-sdk-22.0.1/lib/javafx-swt.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -29,7 +29,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/musicStuff/javafx-sdk-22.0.1/lib/javafx.base.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../musicStuff/javafx-sdk-22.0.1/lib/javafx.base.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -38,7 +38,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/musicStuff/javafx-sdk-22.0.1/lib/javafx.controls.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../musicStuff/javafx-sdk-22.0.1/lib/javafx.controls.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -47,7 +47,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/musicStuff/javafx-sdk-22.0.1/lib/javafx.fxml.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../musicStuff/javafx-sdk-22.0.1/lib/javafx.fxml.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -56,7 +56,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/musicStuff/javafx-sdk-22.0.1/lib/javafx.graphics.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../musicStuff/javafx-sdk-22.0.1/lib/javafx.graphics.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -65,7 +65,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/musicStuff/javafx-sdk-22.0.1/lib/javafx.media.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../musicStuff/javafx-sdk-22.0.1/lib/javafx.media.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -74,7 +74,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/musicStuff/javafx-sdk-22.0.1/lib/javafx.swing.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../musicStuff/javafx-sdk-22.0.1/lib/javafx.swing.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -83,7 +83,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/musicStuff/javafx-sdk-22.0.1/lib/javafx.web.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../musicStuff/javafx-sdk-22.0.1/lib/javafx.web.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -95,15 +95,6 @@
       <library>
         <CLASSES>
           <root url="jar://$USER_HOME$/Documents/lab8/commons-lang3-3.14.0-bin/commons-lang3-3.14.0/commons-lang3-3.14.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../commons-lang3-3.14.0/commons-lang3-3.14.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
