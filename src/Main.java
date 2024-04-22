@@ -21,32 +21,51 @@ public class Main  {
         title.setFont(heading);
         title.setPreferredSize(new Dimension(700, 50));
         title.setOpaque(true);
-        title.setBackground(Color.decode("#f0e9e9"));
+        title.setBackground(Color.decode("#1967af"));
         obj.getContentPane().add(title, BorderLayout.PAGE_START);
 
-        JPanel pane = new JPanel(new FlowLayout());
-        pane.setPreferredSize(new Dimension(700,550));
-        pane.setBackground(Color.PINK);
-        pane.setOpaque(true);
-        JLabel welcomeMessage = new JLabel("Please select a level\n\n");
-        pane.add(welcomeMessage);
-        obj.getContentPane().add(pane, BorderLayout.CENTER);
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        JPanel textPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
+        textPanel.setPreferredSize(new Dimension(700,550));
+        textPanel.setBackground(Color.blue);
+        textPanel.setOpaque(true);
+        JLabel welcomeMessage = new JLabel(" Select a Level\n\n");
+        welcomeMessage.setFont(new Font("Times Roman", Font.BOLD, 25));
+        textPanel.add(welcomeMessage);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setBackground(Color.blue);
+        buttonPanel.setOpaque(true);
 
         JButton Level1 = new JButton("Level 1");
         JButton Level2 = new JButton("Level 2");
         JButton Level3 = new JButton("Level 3");
 
-        Level1.setPreferredSize(new Dimension(75, 25));
-        Level1.setBackground(Color.green);
-        Level2.setPreferredSize(new Dimension(75, 25));
-        Level2.setBackground(Color.yellow);
-        Level3.setPreferredSize(new Dimension(75, 25));
-        Level3.setBackground(Color.red);
+        Level1.setFont(new Font("Times Roman", Font.PLAIN, 25));
+        Level2.setFont(new Font("Times Roman", Font.PLAIN, 25));
+        Level3.setFont(new Font("Times Roman", Font.PLAIN, 25));
 
-        pane.add(Level1);
-        pane.add(Level2);
-        pane.add(Level3);
+        Level1.setPreferredSize(new Dimension(225, 75));
+        Level1.setBackground(Color.green);
+        Level1.setOpaque(true);
+
+        Level2.setPreferredSize(new Dimension(225, 75));
+        Level2.setBackground(Color.yellow);
+        Level2.setOpaque(true);
+
+        Level3.setPreferredSize(new Dimension(225, 75));
+        Level3.setBackground(Color.red);
+        Level3.setOpaque(true);
+
+        buttonPanel.add(Level1);
+        buttonPanel.add(Level2);
+        buttonPanel.add(Level3);
+
+        mainPanel.add(textPanel, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        obj.getContentPane().add(mainPanel);
 
         obj.pack();
         obj.setVisible(true);
