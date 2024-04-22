@@ -1,10 +1,9 @@
-import javax.sound.sampled.*;
-import javax.swing.JFrame;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 
 public class Main  {
@@ -81,31 +80,45 @@ public class Main  {
         Level1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startGameplay(obj);
+                startGameplay(obj, 1);
             }
         });
 
         Level2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startGameplay(obj);
+                startGameplay(obj, 5);
             }
         });
 
         Level3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startGameplay(obj);
+                startGameplay(obj, 10);
             }
         });
 
     }
-    public static void startGameplay(JFrame obj){
+    public static void startGameplay(JFrame obj, int level){
         Gameplay gameplay;
         try{
-            gameplay = new Gameplay();
-        }catch (IOException | UnsupportedAudioFileException | LineUnavailableException ex){
+//            if(level == 1){
+//                gameplay = new Level1();
+//            }
+//            else if(level == 2){
+//                gameplay = new Level5();
+//            }
+//            else{
+//                gameplay = new Level10();
+//            }
+            gameplay = new Gameplay(level);
+
+        }catch (IOException ex){
             throw new RuntimeException(ex);
+        } catch (UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
         }
         obj.getContentPane().removeAll();
         obj.add(gameplay);
