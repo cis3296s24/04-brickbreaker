@@ -1,7 +1,7 @@
+import org.apache.commons.lang3.time.StopWatch;
+
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,15 +9,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.util.Objects;
-import javax.sound.sampled.*;
-import javax.swing.JFrame;
 import java.io.File;
 import java.io.IOException;
-
-import org.apache.commons.lang3.time.StopWatch;
-
-import static javax.swing.plaf.basic.BasicGraphicsUtils.drawString;
+import java.util.Objects;
 
 public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private boolean play;
@@ -43,7 +37,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     private int levels = 1;
 
-    public Gameplay() throws IOException {
+    public Gameplay(int level) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        levels = level;
         File song = new File(("./src/backgroundMusic.wav"));
         //File song = new File("backgroundMusic.wav");
         AudioInputStream audioIn = AudioSystem.getAudioInputStream(song.getAbsoluteFile());
@@ -52,7 +47,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         //clip.start();
         clip.loop(Clip.LOOP_CONTINUOUSLY);
 
-        map = new MapGenerator(2,6);
+        totalBricks = (levels + 1) * (levels + 5);
+        map = new MapGenerator((levels + 1), (levels + 5));
+        //map = new MapGenerator(2,6);
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
