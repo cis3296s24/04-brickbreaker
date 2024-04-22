@@ -43,6 +43,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     private int levels = 1;
 
+    private int minusBricks = 0;
+
     public Gameplay() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         File song = new File(("./src/backgroundMusic.wav"));
         //File song = new File("backgroundMusic.wav");
@@ -52,7 +54,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         //clip.start();
         clip.loop(Clip.LOOP_CONTINUOUSLY);
 
-        map = new MapGenerator(2,6);
+        map = new MapGenerator(2,2);
+        minusBricks = map.bricksRemoved(2,2);
+        totalBricks = 4 - minusBricks;
+
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -247,6 +252,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
                     levels ++;
                 }
                 resetGame();
+
             } else{
                 watch.reset();
                 watch.start();
@@ -274,6 +280,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
+
     private void resetGame(){
         play = true;
         ballposX = 120;
@@ -282,11 +289,18 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         ballYdir = -2;
         playerX = 310;
         score = 0;
-        totalBricks = (levels + 1) * (levels + 5);
+        //totalBricks = (levels + 1) * (levels + 5);
         map = new MapGenerator((levels + 1), (levels + 5));
+
+        minusBricks = map.bricksRemoved((levels + 1),(levels + 5)); // missing bricks
+        //subtract from total bricks
+        totalBricks = (levels + 1) * (levels + 5) - minusBricks;
+
         watch.reset();
         watch.start();
         repaint();
     }
+
+
 
 }
