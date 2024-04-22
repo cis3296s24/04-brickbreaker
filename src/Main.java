@@ -1,13 +1,43 @@
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class Main  {
     public static void main(String[] args) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        AudioInputStream audioIn = null;
+        Clip clip = AudioSystem.getClip();
+        try {
+            File file = new File("src/coconut_01.wav");
+            audioIn = AudioSystem.getAudioInputStream(file);
+            clip.open(audioIn);
+            clip.start();
+        }
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            System.err.println(ex);
+        }
+        finally {
+            try {
+                if (audioIn != null) {
+                    audioIn.close();
+                }
+            }
+            catch (IOException ex) {
+                System.err.println(ex);
+            }
+        }
+
 
         JFrame obj = new JFrame();
 
@@ -17,9 +47,9 @@ public class Main  {
         obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JLabel title = new JLabel("Brick Breaker: SPACE", SwingConstants.CENTER);
-        Font heading = new Font("Times Roman", Font.BOLD, 20);
+        Font heading = new Font("Times Roman", Font.BOLD, 50);
         title.setFont(heading);
-        title.setPreferredSize(new Dimension(700, 50));
+        title.setPreferredSize(new Dimension(700, 245));
         title.setOpaque(true);
         title.setBackground(Color.decode("#749cbd"));
         obj.getContentPane().add(title, BorderLayout.PAGE_START);
@@ -27,7 +57,7 @@ public class Main  {
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel textPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-        textPanel.setPreferredSize(new Dimension(700,550));
+        textPanel.setPreferredSize(new Dimension(700,355));
         textPanel.setBackground(Color.decode("#749cbd"));
         textPanel.setOpaque(true);
         JLabel welcomeMessage = new JLabel(" Select a Level\n\n");
@@ -81,6 +111,7 @@ public class Main  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startGameplay(obj, 1);
+                clip.close();
             }
         });
 
@@ -88,6 +119,7 @@ public class Main  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startGameplay(obj, 5);
+                clip.close();
             }
         });
 
@@ -95,9 +127,9 @@ public class Main  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startGameplay(obj, 10);
+                clip.close();
             }
         });
-
     }
     public static void startGameplay(JFrame obj, int level){
         Gameplay gameplay;
