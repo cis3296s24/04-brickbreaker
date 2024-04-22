@@ -4,6 +4,7 @@ public class MapGenerator {
     public int map[][];
     public int brickHeight;
     public int brickWidth;
+    public Color color = randomColor();
     public MapGenerator(int row, int col){
         map = new int[row][col];
         for(int i = 0; i < map.length; i++){
@@ -13,15 +14,22 @@ public class MapGenerator {
         }
         brickWidth = 540/col;
         brickHeight = 150/row;
+
+    }
+    public Color randomColor(){
+        int r = (int) (Math.random()*256);
+        int g = (int) (Math.random()*256);
+        int b = (int) (Math.random()*256);
+        return (new Color(r,g,b));
     }
     public void draw(Graphics2D g){
         for(int i = 0; i < map.length; i++){
             for(int j = 0; j < map[0].length; j++){
                 if(map[i][j] > 0){
-                    g.setColor(Color.white);
+                    g.setColor(color);
                     g.fillRect(j * brickWidth + 80, i * brickHeight + 50, brickWidth, brickHeight);
 
-                    g.setStroke(new BasicStroke(3));
+                    g.setStroke(new BasicStroke(2));
                     g.setColor(Color.black);
                     g.drawRect(j * brickWidth + 80, i * brickHeight + 50, brickWidth, brickHeight);
                 }

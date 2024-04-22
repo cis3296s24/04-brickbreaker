@@ -8,12 +8,6 @@ import java.io.IOException;
 
 public class Main  {
     public static void main(String[] args) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
-//        File song = new File(this.getClass().getResource("backgroundMusic.wav"));
-//        AudioInputStream audioIn = AudioSystem.getAudioInputStream(song);
-//        Clip clip = AudioSystem.getClip();
-//        clip.open(audioIn);
-//        //clip.start();
-//        clip.loop(Clip.LOOP_CONTINUOUSLY);
 
         JFrame obj = new JFrame();
 
@@ -56,6 +50,13 @@ public class Main  {
 
         obj.pack();
         obj.setVisible(true);
+
+            //Trying to add title screen music
+//        File song = new File(("./src/titleMusic.wav"));
+//        AudioInputStream audioIn = AudioSystem.getAudioInputStream(song.getAbsoluteFile());
+//        Clip clip = AudioSystem.getClip();
+//        clip.open(audioIn);
+//        clip.loop(Clip.LOOP_CONTINUOUSLY);
 
         Level1.addActionListener(new ActionListener() {
             @Override
