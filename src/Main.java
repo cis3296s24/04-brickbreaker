@@ -93,13 +93,6 @@ public class Main  {
         obj.pack();
         obj.setVisible(true);
 
-            //Trying to add title screen music
-//        File song = new File(("./src/titleMusic.wav"));
-//        AudioInputStream audioIn = AudioSystem.getAudioInputStream(song.getAbsoluteFile());
-//        Clip clip = AudioSystem.getClip();
-//        clip.open(audioIn);
-//        clip.loop(Clip.LOOP_CONTINUOUSLY);
-
         Level1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
