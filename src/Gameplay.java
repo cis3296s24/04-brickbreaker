@@ -40,17 +40,15 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     public Gameplay(int level) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         levels = level;
+
         File song = new File(("./src/backgroundMusic.wav"));
-        //File song = new File("backgroundMusic.wav");
         AudioInputStream audioIn = AudioSystem.getAudioInputStream(song.getAbsoluteFile());
         Clip clip = AudioSystem.getClip();
         clip.open(audioIn);
-        //clip.start();
         clip.loop(Clip.LOOP_CONTINUOUSLY);
 
         totalBricks = (levels + 1) * (levels + 5);
         map = new MapGenerator((levels + 1), (levels + 5));
-        //map = new MapGenerator(2,6);
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -65,6 +63,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     public void paintComponent(Graphics g){
         //background
         super.paintComponent(g);
+
         if(backgroundImage != null){
             g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         }
@@ -88,7 +87,6 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         g.setFont(new Font("comic sans", Font.BOLD, 25));
         g.drawString("High Score: " + highScore, 30, 650);
 
-        //Must double press enter to begin game
         //Timer
         g.setColor(Color.white);
         g.setFont(new Font("comic sans",Font.BOLD, 25));
@@ -106,7 +104,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         if(!play){
             g.setColor(Color.blue);
             g.setFont(new Font("comic sans",Font.BOLD, 25));
-            g.drawString("Double press enter to start ", 190, 300);
+            g.drawString("Press enter to start ", 240, 300);
         }
 
         if(totalBricks <= 0){
@@ -119,9 +117,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             if(score > highScore){
                 highScore = score;
             }
-            if(currentTime < bestTime){
-                bestTime = currentTime;
-            }
+
             g.setColor(Color.blue);
             g.setFont(new Font("comic sans", Font.BOLD, 30));
             g.drawString("You won! Score: " + score, 190, 300);
@@ -133,10 +129,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             g.drawString("Press enter to Restart", 230, 350);
 
             g.setFont(new Font("comic sans", Font.BOLD, 20));
-            g.drawString("Best Time: " + formatElapsedTime(bestTime), 270, 380);
+            //g.drawString("Best Time: " + formatElapsedTime(bestTime), 270, 380);
+            g.drawString("Total Time: " + formatElapsedTime(currentTime), 270, 380);
         }
 
         if(ballposY > 570){
+            currentTime = watch.getTime();
             watch.stop();
             play = false;
             ballXdir = 0;
@@ -153,7 +151,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             g.drawString("Press enter to Restart", 250, 350);
 
             g.setFont(new Font("comic sans", Font.BOLD, 20));
-            g.drawString("Best Time: " + formatElapsedTime(bestTime), 270, 380);
+            g.drawString("Total Time: " + formatElapsedTime(currentTime), 270, 380);
         }
         g.dispose();
     }
