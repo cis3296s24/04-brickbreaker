@@ -104,6 +104,7 @@ public class Main  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startGameplay(obj, 1);
+                clip.close();
             }
         });
 
