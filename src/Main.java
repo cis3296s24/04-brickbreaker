@@ -19,7 +19,7 @@ public class Main  {
         AudioInputStream audioIn = null;
         Clip clip = AudioSystem.getClip();
         try {
-            File file = new File("src/coconut_01.wav");
+            File file = new File("src/donk.wav");
             audioIn = AudioSystem.getAudioInputStream(file);
             clip.open(audioIn);
             clip.start();
@@ -111,7 +111,6 @@ public class Main  {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startGameplay(obj, 1);
-                clip.close();
             }
         });
 
