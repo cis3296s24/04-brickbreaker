@@ -25,7 +25,7 @@ public class MapGenerator {
                 // row == 3 && col == 7
                 // unique layout for 3 by 7
 
-                if (row == 3 && col == 7) {
+                else if (row == 3 && col == 7) {
 
                     if (i == j) {
                         map[i][j] = 0;
@@ -48,7 +48,7 @@ public class MapGenerator {
                 // 4 by 8
 
 
-                if (row == 4 && col == 8) {
+                else if (row == 4 && col == 8) {
                     if ((i == 1 || i == 2) && (j == 0 || j == 3 || j == 4 || j == 7)) {
                         map[i][j] = 0;
                     }
@@ -58,6 +58,9 @@ public class MapGenerator {
                     else {
                         map[i][j] = 1;
                     }
+                }
+                else {
+                    map[i][j] = 1;
                 }
 
 

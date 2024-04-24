@@ -1,20 +1,12 @@
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.*;
 import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
-import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
-public class Main  {git 
+public class Main  {
     public static void main(String[] args) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         AudioInputStream audioIn = null;
         Clip clip = AudioSystem.getClip();
@@ -97,8 +89,7 @@ public class Main  {git
         Level1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //startGameplay(obj, 2, 2);
-                startGameplay(obj,1);
+                startGameplay(obj, 1);
                 clip.close();
             }
         });
@@ -124,10 +115,10 @@ public class Main  {git
     // int row, int col
     public static void startGameplay(JFrame obj, int level){
         Gameplay gameplay;
-        try{
+        try {
             gameplay = new Gameplay(level);
-
-        }catch (IOException ex){
+        }
+        catch (IOException ex){
             throw new RuntimeException(ex);
         } catch (UnsupportedAudioFileException e) {
             throw new RuntimeException(e);
