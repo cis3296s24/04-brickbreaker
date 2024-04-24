@@ -115,10 +115,10 @@ public class Main  {
     // int row, int col
     public static void startGameplay(JFrame obj, int level){
         Gameplay gameplay;
-
+        try {
             gameplay = new Gameplay(level);
-
-        }catch (IOException ex){
+        }
+        catch (IOException ex){
             throw new RuntimeException(ex);
         } catch (UnsupportedAudioFileException e) {
             throw new RuntimeException(e);
