@@ -32,29 +32,36 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private MapGenerator map;
     private ImageIcon paddleIcon;
     private ImageIcon ballIcon;
-  
-   StopWatch watch = new StopWatch();
+
+    StopWatch watch = new StopWatch();
 
     private int levels = 1;
 
+    private int minusBricks = 0;
 
+
+    // int row, int col
     public Gameplay(int level) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         levels = level;
-
         File song = new File(("./src/backgroundMusic.wav"));
         AudioInputStream audioIn = AudioSystem.getAudioInputStream(song.getAbsoluteFile());
         Clip clip = AudioSystem.getClip();
         clip.open(audioIn);
         clip.loop(Clip.LOOP_CONTINUOUSLY);
 
-        totalBricks = (levels + 1) * (levels + 5);
+        //totalBricks = (levels + 1) * (levels + 5);
         map = new MapGenerator((levels + 1), (levels + 5));
+        minusBricks = map.bricksRemoved((levels + 1), (levels + 5));
+        totalBricks = ((levels + 1) * (levels + 5)) - minusBricks;
+
+
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         timer = new Timer(delay, this);
         timer.start();
         watch.reset();
+        //watch.start();
         paddleIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("paddle.png")));
         ballIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("ball.png")));
         backgroundImage = ImageIO.read(Objects.requireNonNull(this.getClass().getResource("background.jpg")));// Change "background.jpg" to your image file path
@@ -94,7 +101,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
 
         //the paddle
-       Image paddleImage =  paddleIcon.getImage();
+        Image paddleImage =  paddleIcon.getImage();
         g.drawImage(paddleImage, playerX, 500,80,80, this);
 
         //the ball
@@ -104,7 +111,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         if(!play){
             g.setColor(Color.blue);
             g.setFont(new Font("comic sans",Font.BOLD, 25));
-            g.drawString("Press enter to start ", 240, 300);
+            g.drawString("Press Enter to Begin ", 200, 300);
         }
 
         if(totalBricks <= 0){
@@ -159,59 +166,59 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    if(play){
-        if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX, 550, 30, 8))){
-            ballYdir = -ballYdir;
-            ballXdir = -2;
-        }
-        else if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX + 70, 550, 30, 8))){
-            ballYdir = -ballYdir;
-            ballXdir = ballXdir + 1;
-        }
-        else if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX + 30, 550, 40, 8)))
-        {
-            ballYdir = -ballYdir;
-        }
+        if(play){
+            if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX, 550, 30, 8))){
+                ballYdir = -ballYdir;
+                ballXdir = -2;
+            }
+            else if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX + 70, 550, 30, 8))){
+                ballYdir = -ballYdir;
+                ballXdir = ballXdir + 1;
+            }
+            else if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX + 30, 550, 40, 8)))
+            {
+                ballYdir = -ballYdir;
+            }
 
-        A: for(int i = 0; i < map.map.length; i++){
-            for(int j = 0; j < map.map[0].length; j++){
-                if(map.map[i][j] > 0){
-                    int bricksX = j * map.brickWidth + 80;
-                    int bricksY = i * map.brickHeight + 50;
-                    int brickWidth = map.brickWidth;
-                    int brickHeight = map.brickHeight;
+            A: for(int i = 0; i < map.map.length; i++){
+                for(int j = 0; j < map.map[0].length; j++){
+                    if(map.map[i][j] > 0){
+                        int bricksX = j * map.brickWidth + 80;
+                        int bricksY = i * map.brickHeight + 50;
+                        int brickWidth = map.brickWidth;
+                        int brickHeight = map.brickHeight;
 
-                    Rectangle rect = new Rectangle(bricksX, bricksY, brickWidth, brickHeight);
-                    Rectangle ballRect = new Rectangle(ballposX, ballposY, 20, 20);
+                        Rectangle rect = new Rectangle(bricksX, bricksY, brickWidth, brickHeight);
+                        Rectangle ballRect = new Rectangle(ballposX, ballposY, 20, 20);
 
-                    if(ballRect.intersects(rect)){
-                        map.setBricksValue(0,i,j);
-                        score += 5;
-                        totalBricks--;
+                        if(ballRect.intersects(rect)){
+                            map.setBricksValue(0,i,j);
+                            score += 5;
+                            totalBricks--;
 
-                        if(ballposX + 19 <= rect.x || ballposX + 1 >= rect.x + rect.width){
-                            ballXdir = -ballXdir;
-                        }else{
-                            ballYdir = -ballYdir;
+                            if(ballposX + 19 <= rect.x || ballposX + 1 >= rect.x + rect.width){
+                                ballXdir = -ballXdir;
+                            }else{
+                                ballYdir = -ballYdir;
+                            }
+                            break A;
                         }
-                        break A;
                     }
                 }
             }
+            ballposX += ballXdir;
+            ballposY += ballYdir;
+            if(ballposX < 0){
+                ballXdir = -ballXdir;
+            }
+            if(ballposY < 0){
+                ballYdir = -ballYdir;
+            }
+            if(ballposX > 670){
+                ballXdir = -ballXdir;
+            }
         }
-        ballposX += ballXdir;
-        ballposY += ballYdir;
-        if(ballposX < 0){
-            ballXdir = -ballXdir;
-        }
-        if(ballposY < 0){
-            ballYdir = -ballYdir;
-        }
-        if(ballposX > 670){
-            ballXdir = -ballXdir;
-        }
-    }
-    repaint();
+        repaint();
     }
 
 
@@ -279,8 +286,11 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         ballYdir = -2;
         playerX = 310;
         score = 0;
-        totalBricks = (levels + 1) * (levels + 5);
+        //totalBricks = (levels + 1) * (levels + 5);
         map = new MapGenerator((levels + 1), (levels + 5));
+        minusBricks = map.bricksRemoved((levels + 1),(levels + 5));
+        totalBricks = (levels + 1) * (levels + 5) - minusBricks;
+
         watch.reset();
         watch.start();
         repaint();
