@@ -64,21 +64,14 @@ public class Main  {
         JButton Level2 = new JButton("Level 2");
         JButton Level3 = new JButton("Level 3");
 
-        Level1.setFont(new Font("Times Roman", Font.PLAIN, 25));
-        Level2.setFont(new Font("Times Roman", Font.PLAIN, 25));
-        Level3.setFont(new Font("Times Roman", Font.PLAIN, 25));
+        Font buttonFont = new Font("Times Roman", Font.PLAIN, 25);
+        Level1.setFont(buttonFont);
+        Level2.setFont(buttonFont);
+        Level3.setFont(buttonFont);
 
-        Level1.setPreferredSize(new Dimension(225, 75));
-        Level1.setBackground(Color.green);
-        Level1.setOpaque(true);
-
-        Level2.setPreferredSize(new Dimension(225, 75));
-        Level2.setBackground(Color.yellow);
-        Level2.setOpaque(true);
-
-        Level3.setPreferredSize(new Dimension(225, 75));
-        Level3.setBackground(Color.red);
-        Level3.setOpaque(true);
+        configureButton(Level1, Color.green);
+        configureButton(Level2, Color.yellow);
+        configureButton(Level3, Color.red);
 
         buttonPanel.add(Level1);
         buttonPanel.add(Level2);
@@ -92,18 +85,11 @@ public class Main  {
         obj.pack();
         obj.setVisible(true);
 
-        //Trying to add title screen music
-//        File song = new File(("./src/titleMusic.wav"));
-//        AudioInputStream audioIn = AudioSystem.getAudioInputStream(song.getAbsoluteFile());
-//        Clip clip = AudioSystem.getClip();
-//        clip.open(audioIn);
-//        clip.loop(Clip.LOOP_CONTINUOUSLY);
 
         Level1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //startGameplay(obj, 2, 2);
-                startGameplay(obj,1);
+                startGameplay(obj, 1);
                 clip.close();
             }
         });
@@ -129,17 +115,7 @@ public class Main  {
     // int row, int col
     public static void startGameplay(JFrame obj, int level){
         Gameplay gameplay;
-        try{
-//            if(level == 1){
-//                gameplay = new Level1();
-//            }
-//            else if(level == 2){
-//                gameplay = new Level5();
-//            }
-//            else{
-//                gameplay = new Level10();
-//            }
-            //gameplay = new Gameplay(row, col);
+
             gameplay = new Gameplay(level);
 
         }catch (IOException ex){
@@ -154,6 +130,12 @@ public class Main  {
         obj.revalidate();
         obj.repaint();
         gameplay.requestFocusInWindow();
+    }
+
+    public static void configureButton(JButton button, Color background){
+        button.setPreferredSize(new Dimension(225, 75));
+        button.setBackground(background);
+        button.setOpaque(true);
     }
 
 }
