@@ -4,18 +4,6 @@ BrickBreaker, the classic arcade game but with a space theme.Players can navigat
 Adding an screenshot or a mockup of your application in action would be nice. 
 ![img.png](img.png)
 ![img_1.png](img_1.png)
-# How to run
-Provide here instructions on how to use your application.   
-- Download the latest binary from the Release section on the right on GitHub.  
-- On the command line uncompress using
-```
-tar -xzf  
-```
-- On the command line run with
-```
-./hello
-```
-- You will see Hello World! on your terminal.
 
 ### How to build
 - Use this github repository: Clone or download the repository onto your local device. 
@@ -25,6 +13,6 @@ tar -xzf
 - In the main file run and compile as usual.
 - Once the file is running the game should open in a new window.
 
-### project proposal
+### Project proposal
 This document proposes a novel application of BrickBreaker, the classic arcade game but with a space theme. Players can navigate through a title screen menu to start and exit from the game. Players move their paddle left and right to deflect the ball upwards and crush the blocks. Each level increases the difficulty.
 
