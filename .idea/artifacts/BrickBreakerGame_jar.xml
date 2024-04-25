@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BrickBreakerGame:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BrickBreakerGame_jar</output-path>
+    <root id="archive" name="BrickBreakerGame.jar">
+      <element id="module-output" name="BrickBreakerGame" />
+      <element id="library" level="project" name="java" />
+      <element id="library" level="project" name="commons-lang3-3.14" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/lab8/commons-lang3-3.14.0-bin/commons-lang3-3.14.0/commons-lang3-3.14.0.jar" path-in-jar="/" />
+      <element id="library" level="project" name="gameMusic (2)" />
+    </root>
+  </artifact>
+</component>
