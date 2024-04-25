@@ -13,6 +13,30 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Gamplay Class
+ * Handles the brick breaker game itself and how it functions.
+ * The class handles, points, progression, times, collisions,
+ * and other important functions for the game to properly run
+ * Play: flag to indicate if the level is being played
+ * Score: the player's score
+ * totalBricks: number of bricks in the level
+ * timer: handles time events
+ * bestTime: used for the player's best time:
+ * currentTime: stores the current time in the game
+ * delay: amount of delay for actionsPeformed before another can be mdade
+ * playerX: Coordinate for the paddle along the X-position
+ * ballPositonX: Coordinate for the ball along the X-position
+ * ballPositionY: Coordinate for the ball along the Y-position
+ * highScore: Highest score for the player
+ * backgroundImage: background for the game
+ * map: instance of MapGenerator for the levels
+ * paddleIcon: image for the paddle
+ * ballIcon: image for the ball
+ * watch: measures how much time as passed in game
+ * levels: level of the game, also used for level creation for the rows and columns
+ * minusBricks: for the number of bricks gone from the bricksRemoved method and totalBricks
+ */
 public class Gameplay extends JPanel implements KeyListener, ActionListener {
     private boolean play;
     private int score = 0;
@@ -41,6 +65,19 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
 
 
     // int row, int col
+
+    /**
+     * Constructor
+     * Starts the background music off for the levels
+     * Creates the first level that the user chooses
+     * Starts the timer
+     * Retrieves the images for the ball, paddle, and background
+     * Sets up for the Key events later
+     * @param level the levels for the game itself, this is also used for the rows and columns
+     * @throws IOException
+     * @throws UnsupportedAudioFileException
+     * @throws LineUnavailableException
+     */
     public Gameplay(int level) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         levels = level;
         File song = new File(("./src/backgroundMusic.wav"));
@@ -67,6 +104,19 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         backgroundImage = ImageIO.read(Objects.requireNonNull(this.getClass().getResource("background.jpg")));// Change "background.jpg" to your image file path
     }
 
+    /**
+     * Method that handles the graphics for the game
+     * Drawing the background image
+     * Draws out the bricks by calling the draw method from MapGenerator
+     * Borders for the game
+     * The score that's being kept track of
+     * The timer, and the high score
+     * The ball and the paddle
+     * Handles the graphics for messages such as game over and pressing
+     * enter to start
+     * Detects if the level has been completed to stop the watch and the time and score
+     * @param g the <code>Graphics</code> object to protect
+     */
     public void paintComponent(Graphics g){
         //background
         super.paintComponent(g);
@@ -164,6 +214,15 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     }
 
 
+    /**
+     * This method handles several features,
+     * Detects and handles collision between the ball and the paddle,
+     * Collision with the bricks,
+     * Movement of the ball,
+     * Collision with the bounds of the game (the screen),
+     * Repaint to draw the following level
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(play){
@@ -208,25 +267,29 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
             }
             ballposX += ballXdir;
             ballposY += ballYdir;
-            if(ballposX < 0){
-                ballXdir = -ballXdir;
-            }
-            if(ballposY < 0){
-                ballYdir = -ballYdir;
-            }
-            if(ballposX > 670){
-                ballXdir = -ballXdir;
-            }
+
+
         }
         repaint();
     }
 
 
+    /**
+     * Empty key typed event
+     * @param e the event to be processed
+     */
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
 
+    /**
+     * Method the process events depending on what key is pressed.
+     * It gets the key pressed and puts it into a variable, then
+     * depending on what it was some code will be executed such as movement,
+     * level progression, and restarting a level
+     * @param e the event to be processed
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -259,10 +322,18 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     }
 
     //test :3
+
+    /**
+     * Method to move the paddle to the right
+     */
     public void moveRight(){
         play = true;
         playerX+=20;
     }
+
+    /**
+     * Method to move the paddle to the left
+     */
     public void moveLeft(){
         play = true;
         playerX-=20;
@@ -271,6 +342,12 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
     public void keyReleased(KeyEvent e) {
 
     }
+
+    /**
+     * Method to format the time into minutes and seconds
+     * @param millis time in milliseconds
+     * @return the time it took to complete the level
+     */
     private String formatElapsedTime(long millis){
         long seconds = millis / 1000;
         long minutes = seconds / 60;
@@ -278,6 +355,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
+    /**
+     * Method that generates the following level,
+     * Restarts time and ball position, creates the next level for the game
+     */
     private void resetGame(){
         play = true;
         ballposX = 120;
